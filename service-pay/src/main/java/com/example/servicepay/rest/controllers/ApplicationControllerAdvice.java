@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.servicepay.exceptions.PedidoNaoEncontradoException;
 import com.example.servicepay.exceptions.RegraNegocioException;
+import com.example.servicepay.exceptions.UsuarioException;
 import com.example.servicepay.rest.ApiErrors;
 
 @RestControllerAdvice
@@ -23,9 +23,9 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(mensagemErro);
     }
 
-    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ExceptionHandler(UsuarioException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrors handlePedidoNotFoundException( PedidoNaoEncontradoException ex ){
+    public ApiErrors handleUsuarioException( UsuarioException ex ){
         return new ApiErrors(ex.getMessage());
     }
 

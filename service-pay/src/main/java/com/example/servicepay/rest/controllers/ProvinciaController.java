@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.servicepay.domain.entities.Provincia;
-import com.example.servicepay.domain.repositories.ProvinciaRepository;
 import com.example.servicepay.service.impl.ProvinciaService;
 
 import io.swagger.annotations.ApiOperation;

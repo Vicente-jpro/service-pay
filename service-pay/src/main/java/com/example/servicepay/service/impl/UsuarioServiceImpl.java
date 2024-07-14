@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.servicepay.domain.entities.Usuario;
 import com.example.servicepay.domain.repositories.UsuarioRepository;
 import com.example.servicepay.exceptions.SenhaInvalidaException;
+import com.example.servicepay.exceptions.UsuarioException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UsuarioServiceImpl implements UserDetailsService {
 
@@ -24,14 +28,21 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
     @Transactional
     public Usuario salvar(Usuario usuario){
-        return repository.save(usuario);
+    	log.info("Salvando o usuario...");
+    	try {
+    		return repository.save(usuario);
+		} catch (Exception e) {
+			log.error("Email ja esta registado...");
+			throw new UsuarioException("Email ja esta registado.");
+		}
+    	
     }
 
     public UserDetails autenticar( Usuario usuario ){
         UserDetails user = loadUserByUsername(usuario.getLogin());
-        boolean senhasBatem = encoder.matches( usuario.getSenha(), user.getPassword() );
+        boolean senhasIguais = encoder.matches( usuario.getSenha(), user.getPassword() );
 
-        if(senhasBatem){
+        if(senhasIguais){
             return user;
         }
 
