@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MunicipioService  {
 	
 	private final MunicipioRepository municipioRepository;
-	private final ProvinciaService provinciaService;
 	
 	public List<Municipio> getMunicipiosAndProvinciaId(Long idProvincia) {
 		log.info("Buscando todos os municipios correspondente com provincia_id: {}", idProvincia); 

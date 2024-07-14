@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.exceptions.RegraNegocioException;
 import com.example.servicepay.exceptions.UsuarioException;
 import com.example.servicepay.rest.ApiErrors;
@@ -28,7 +29,15 @@ public class ApplicationControllerAdvice {
     public ApiErrors handleUsuarioException( UsuarioException ex ){
         return new ApiErrors(ex.getMessage());
     }
+    
 
+    @ExceptionHandler(EnderecoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors handleEnderecoException( EnderecoException ex ){
+        return new ApiErrors(ex.getMessage());
+    }
+    
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors handleMethodNotValidException( MethodArgumentNotValidException ex ){
