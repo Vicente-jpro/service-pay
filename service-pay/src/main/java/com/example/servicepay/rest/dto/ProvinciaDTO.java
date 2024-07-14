@@ -1,17 +1,17 @@
 package com.example.servicepay.rest.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProvinciaDTO {
 	private Long id;
 	private String nomeProvincia;
-	private List<MunicipioDTO> municipiosDto;
+	//private List<MunicipioDTO> municipiosDto;
 
 }

@@ -29,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class MunicipioController {
 
 	private final MunicipioService municipioService;
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@GetMapping("/{id_provincia}")
 	@ApiOperation("Buscar todos os Municipios pelo id_provincia.")
@@ -37,32 +39,29 @@ public class MunicipioController {
 	public List<MunicipioDTO> getMunicipiosByProvincia(@PathVariable("id_provincia") Long idProvincia){
 		
 		List<Municipio> municipios = municipioService.getMunicipiosByProvincia(idProvincia);
-		List<MunicipioDTO> municipiosDTO = new ArrayList<>();
-		
-		
-		for(Municipio m: municipios) {
-		ModelMapper mp = new ModelMapper();
-		
-			ProvinciaDTO pDto = mp.map(m.getProvincia(), ProvinciaDTO.class);
-			
-			MunicipioDTO mDto = MunicipioDTO
-					.builder()
-						.id(m.getId())
-						.nomeMunicipio(m.getNomeMunicipio())
-						.provinciaDTO(pDto)
-					.build();
-			municipiosDTO.add(mDto);
-		}
-		return municipiosDTO;
+	//	List<MunicipioDTO> municipiosDTO = new ArrayList<>();
 		/*
+		for(Municipio mp: municipios) {
+			ProvinciaDTO provinciaDTO = modelMapper.map(mp.getProvincia(), ProvinciaDTO.class);
+			
+			MunicipioDTO pDto = MunicipioDTO
+					.builder()
+						.id(mp.getId())
+						.nomeMunicipio(mp.getNomeMunicipio())
+						.provincia(provinciaDTO)
+					.build();
+			municipiosDTO.add(pDto);
+		}
+		*/
+		
+		
 		return municipios.stream().map( m ->{
-			ModelMapper modelMapper = new ModelMapper();
 			
 			MunicipioDTO municipiosDTO = modelMapper.map(m, MunicipioDTO.class);
 	
 			return municipiosDTO;		
 		}).collect(Collectors.toList());
-		*/
 		
+	//	return municipiosDTO;
 	}
 }
