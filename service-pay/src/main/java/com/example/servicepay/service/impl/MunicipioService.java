@@ -22,11 +22,11 @@ public class MunicipioService  {
 	private final MunicipioRepository municipioRepository;
 	private final ProvinciaService provinciaService;
 	
-	public List<Municipio> getMunicipiosByProvincia(Long idProvincia) {
+	public List<Municipio> getMunicipiosAndProvinciaId(Long idProvincia) {
 		log.info("Buscando todos os municipios correspondente com provincia_id: {}", idProvincia); 
 		Provincia  provincia = new Provincia();
 		provincia.setId(idProvincia);
-		List<Municipio> municiosProvincia = municipioRepository.findByProvincia(provincia);
+		List<Municipio> municiosProvincia = municipioRepository.findByProvinciaId(provincia.getId());
 		
 		return municiosProvincia;
 	}
