@@ -30,10 +30,10 @@ public class Endereco {
 	@Column(name = "morada2")
 	private String morada2;
 	
-	@Column(name = "telemovel1")
+	@Column(name = "telemovel1", length = 20)
 	private String telemovel1;
 	
-	@Column(name = "telemovel2")
+	@Column(name = "telemovel2", length = 20)
 	private String telemovel2;
 	
 	@ManyToOne
