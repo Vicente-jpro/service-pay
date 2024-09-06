@@ -1,0 +1,68 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# Data base Connection
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/service_pay
+    username: postgres
+    password: ${POSTGRES_VICENTE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  main:
+    allow-circular-references: true
+
+# Email local configuration aws
+  #mail:
+    #host: email-smtp.us-west-2.amazonaws.com
+    #username: username
+    #password: password
+    #transport:
+      #protocol: smtp
+    #smtp:
+      #port: 25
+      #auth: true
+      #starttls:
+        #enable: true
+        #required: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: "<test@gmail.com>"
+    password: "12345"
+    smtp:
+      auth: false
+      starttls: 
+        enable: false
+
+# Swegger
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+# Spring Security and token JWT
+security:
+  jwt:
+    expiracao: 30
+    chave-assinatura: 764811743f33067f36d72dd04ce22a27
+  password:
+    reset: http://localhost:8080/api/user/password/reset?token=
+  account: 
+    confirmation: http://localhost:8080/api/user/account/confirmed?token=
+  message:
+    change-password:
+      title: <h3> INSTRUÇÃO PARA REDEFINIR A SENHA! </h3>
+      body: <p> Siga as instruções abaixo para definir uma nova senha. Clica no link</p>

@@ -2,6 +2,7 @@ package com.example.servicepay.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,13 +17,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.servicepay.security.jwt.JwtAuthFilter;
 import com.example.servicepay.security.jwt.JwtService;
-import com.example.servicepay.service.impl.UsuarioServiceImpl;
+import com.example.servicepay.service.UsuarioServiceImpl;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UsuarioServiceImpl usuarioService;
+    
     @Autowired
     private JwtService jwtService;
 
@@ -48,13 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/clientes/**")
+            	.antMatchers("/swagger-ui/**")
+            		.permitAll()
+                .antMatchers("/items/**")
                     .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/pedidos/**")
+                .antMatchers("/stock_movements/**")
                     .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/produtos/**")
-                    .hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/usuarios/**")
+                .antMatchers("/orders/**")
+                	.hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/user/**")
                     .permitAll()
                 .anyRequest().authenticated()
             .and()

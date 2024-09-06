@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.example.servicepay.rest.controllers"))
+                        .basePackage("com.example.servicepay.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(Arrays.asList(securityContext()))
@@ -35,17 +35,17 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("Vendas API")
-                .description("Api do projeto de Vendas")
+                .title("Vicente Service Pay API")
+                .description("This API is used to controll the payment of service.")
                 .version("1.0")
                 .contact(contact())
                 .build();
     }
 
     private Contact contact(){
-        return new Contact("Dougllas Sousa"
-                , "http://github.com/cursodsousa",
-                "dougllasfps@gmail.com");
+        return new Contact("Vicente Simao"
+                , "http://github.com/vicente-jpro",
+                "vicente.simao.rails@gmail.com");
     }
 
     public ApiKey apiKey(){
