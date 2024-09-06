@@ -54,12 +54,14 @@ public class UsuarioController {
     
     private final EmailService emailService;
     
-    @Value("${security.password.reset}")
-    private String urlPasswordReset;
+    @Value("${security.url.account.reset}")
+    private String urlAccountReset;
 
-    @Value("${security.account.confirmation}")
+    @Value("${security.url.account.confirmation.send}")
     private String urlAccountConfirmation;
     
+    
+        	  
     @ApiOperation("Save a user and send email to confirm account.")
     @ApiResponses({
     	@ApiResponse( code = 201, message = "User saved sussefully."),
@@ -87,7 +89,7 @@ public class UsuarioController {
             userSaved = usuarioService.salvar(user);
     
 	        //Send email to the user with this address.
-	        emailService.sendEmailWithLink(userSaved.getEmail(), "TOKEN INSTRUCTION TO CONFIRM ACCOUNT.",
+	        emailService.sendEmailWithLink(userSaved.getEmail(), "CONFIRM ACCOUNT INSTRUCTION",
 	        		urlAccountConfirmation+userSaved.getTokenConfirmedAccount());
 	        
 	        userDTO.setId(userSaved.getId());
@@ -96,6 +98,35 @@ public class UsuarioController {
         }
         log.error("Confirmed password is diferent: {}", userDTO.getEmail());
     	throw new UsuarioException("Password is diferent: "+ userDTO.getEmail());
+        
+    }
+    
+    
+    @ApiOperation("Resend account confirmed email to confirm account.")
+    @ApiResponses({
+    	@ApiResponse( code = 201, message = "User saved sussefully."),
+    	@ApiResponse( code = 401, message = "")
+    })
+    @PostMapping("/account/confirmed/resend")
+    @ResponseStatus(HttpStatus.OK)
+    public void accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
+    
+    	UserModel usuario = new UserModel();
+        usuario.setEmail(userEmail.getEmail());
+        
+	    UserModel usuarioAutenticado = usuarioService.autenticarEmail(usuario);
+	    String token = jwtService.gerarToken(usuarioAutenticado);
+	    TokenDTO tokenReceived = new TokenDTO(usuario.getEmail(), token);
+	    
+	    usuarioAutenticado.setTokenConfirmedAccount(token);
+	    this.usuarioService.salvar(usuarioAutenticado);
+	    
+	    //Send email to the user with this address.
+	    emailService.sendEmailWithLink(usuarioAutenticado.getEmail(), "CONFIRM ACCOUNT INSTRUCTION",
+	    		urlAccountConfirmation+tokenReceived.getToken());
+	    
+	    System.out.println(urlAccountConfirmation+tokenReceived.getToken());
+  
         
     }
     
@@ -161,9 +192,9 @@ public class UsuarioController {
             
             //Send email to the user with this address.
             emailService.sendEmailWithLink(usuarioAutenticado.getEmail(), "PASSWORD RESET INSTRUCTION",
-            		urlPasswordReset+tokenReceived.getToken());
+            		urlAccountReset+tokenReceived.getToken());
             
-            System.out.println(urlPasswordReset+tokenReceived.getToken());
+            System.out.println(urlAccountReset+tokenReceived.getToken());
             
         } catch (UsernameNotFoundException | SenhaInvalidaException e ){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
