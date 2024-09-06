@@ -1,14 +1,22 @@
 package com.example.servicepay.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.criteria.Order;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,11 +58,11 @@ public class UserModel implements Serializable {
     @Column(name = "token_confirmed_account")
     private String tokenConfirmedAccount;
     
-    /*
+    
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
-    */
+    private List<Endereco> enderecos = new ArrayList<>();
+    
     
     public boolean isTokenEquals(String token1, String token2) {
     	return token1.equalsIgnoreCase(token2);

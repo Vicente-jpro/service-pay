@@ -31,4 +31,5 @@ public class EnderecoRequestDto {
 	
 	@JsonProperty("municipio")
 	private MunicipioDTO municipio;
+	
 }

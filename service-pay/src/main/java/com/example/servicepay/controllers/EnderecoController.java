@@ -2,6 +2,7 @@ package com.example.servicepay.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,8 @@ import com.example.servicepay.dto.EnderecoRequestDto;
 import com.example.servicepay.dto.EnderecoResponseDto;
 import com.example.servicepay.entities.Endereco;
 import com.example.servicepay.service.EnderecoService;
+import com.example.servicepay.util.CurrentUser;
+import com.example.servicepay.util.LoggedInUser;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -38,9 +41,10 @@ public class EnderecoController {
 		@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
 		@ApiResponse(code = 404, message = "Erro ao salvar o contacto." )
 	})
-	public EnderecoResponseDto salvar(@RequestBody EnderecoRequestDto enderecoRequestDTO) {
-
-		Endereco endereco = enderecoService.salvar(enderecoRequestDTO);
+	public EnderecoResponseDto salvar(@RequestBody EnderecoRequestDto enderecoRequestDTO, 
+			@LoggedInUser CurrentUser currentUser) {
+		
+		Endereco endereco = enderecoService.salvar(enderecoRequestDTO, currentUser.getUser());
 		EnderecoResponseDto enderecoResponseDTO = modelMapper.map(endereco, EnderecoResponseDto.class);
 		
 		return enderecoResponseDTO;
@@ -53,8 +57,11 @@ public class EnderecoController {
 		@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
 		@ApiResponse(code = 404, message = "Erro ao salvar o contacto.")
 	})
-	public EnderecoResponseDto atualizar(@RequestBody EnderecoRequestDto enderecoRequestDTO, @PathVariable("id_endereco") Long idEndereco) {	
-		Endereco enderecoSalvo = this.enderecoService.atualizar(enderecoRequestDTO, idEndereco);
+	public EnderecoResponseDto atualizar(@RequestBody EnderecoRequestDto enderecoRequestDTO, 
+			@PathVariable("id_endereco") Long idEndereco,
+			@LoggedInUser CurrentUser currentUser) {	
+		
+		Endereco enderecoSalvo = this.enderecoService.atualizar(enderecoRequestDTO, currentUser.getUser());
 		EnderecoResponseDto enderecoResponseDto = modelMapper.map(enderecoSalvo, EnderecoResponseDto.class);
 		return enderecoResponseDto;
 	}
@@ -66,9 +73,9 @@ public class EnderecoController {
 		@ApiResponse(code = 200, message = "Endereco encontrado com sucesso."), 
 		@ApiResponse(code = 404, message = "Parametro invalido")
 	})
-	public EnderecoResponseDto getEnderecoById(Long idEndereco) {
+	public EnderecoResponseDto getEnderecoById(Long idEndereco, @LoggedInUser CurrentUser currentUser) {
 		
-		Endereco endereco = this.enderecoService.getEnderecoById(idEndereco);
+		Endereco endereco = this.enderecoService.findByUser(currentUser.getUser());
 		EnderecoResponseDto enderecoResponseDto = this.modelMapper.map(endereco, EnderecoResponseDto.class);
 		return enderecoResponseDto;
 	}

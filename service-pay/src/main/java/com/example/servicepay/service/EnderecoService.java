@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.servicepay.dto.EnderecoRequestDto;
 import com.example.servicepay.entities.Endereco;
 import com.example.servicepay.entities.Municipio;
+import com.example.servicepay.entities.UserModel;
 import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.repositories.EnderecoRepository;
 
@@ -23,30 +24,31 @@ public class EnderecoService {
 	private final EnderecoRepository enderecoRepository;
 	private final ModelMapper modelMapper;
 	
-	public Endereco salvar(EnderecoRequestDto enderecoRequestDTO) {
+	public Endereco salvar(EnderecoRequestDto enderecoRequestDTO, UserModel usuario) {
 		log.info("Salvando o endereco...");
 		
 		Endereco endereco = modelMapper.map(enderecoRequestDTO, Endereco.class);
 		Municipio municipio = modelMapper.map(enderecoRequestDTO.getMunicipio(), Municipio.class);
+		endereco.setUser(usuario);
 		endereco.setMunicipio(municipio);
 		
 		return enderecoRepository.save(endereco);
 	}
 	
-	public Endereco atualizar(EnderecoRequestDto enderecoRequestDTO, Long idEndereco) {
+	public Endereco atualizar(EnderecoRequestDto enderecoRequestDTO, UserModel user) {
 		log.info("Atualizando o endereco...");		
-		Endereco enderecoSalvo = getEnderecoById(idEndereco);
+		Endereco enderecoSalvo = findByUser(user);
 		enderecoRequestDTO.setId(enderecoSalvo.getId());
 		
-		return this.salvar(enderecoRequestDTO);
+		return this.salvar(enderecoRequestDTO, user);
 	}
 	
-	public Endereco getEnderecoById(Long idEndereco) {
-		log.info("Buscando o endereco co ID: {}", idEndereco);
+	public Endereco findByUser( UserModel user) {
+		log.info("Buscando o endereco co ID: {}", user.getId());
 		
-		Endereco endereco = enderecoRepository.findById(idEndereco).get();
+		Endereco endereco = enderecoRepository.findByUser(user);
 		if(endereco == null) {
-			log.error("Endereco nao encontrado ID: {}", idEndereco);
+			log.error("Endereco nao encontrado ID: {}", user.getId());
 			throw new EnderecoException("Endereco nao encontrado.");
 		}
 		
