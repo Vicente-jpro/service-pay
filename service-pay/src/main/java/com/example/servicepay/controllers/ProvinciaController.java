@@ -35,7 +35,7 @@ public class ProvinciaController {
 	}
 	
 	
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}", produces = "application/json")
 	@ApiOperation("Buscar provincia pelo id.")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Busca da provincia efetuada com sucesso"),
