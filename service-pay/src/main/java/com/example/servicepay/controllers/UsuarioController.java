@@ -67,7 +67,7 @@ public class UsuarioController {
     	@ApiResponse( code = 201, message = "User saved sussefully."),
     	@ApiResponse( code = 401, message = "")
     })
-    @PostMapping(path ="/", produces = "application/json", consumes = "application/json")
+    @PostMapping(produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO save( @RequestBody @Valid UserDTO userDTO ) throws MessagingException{
     	 UserModel user = new UserModel();

@@ -49,7 +49,7 @@ public class MunicipioController {
 
 	}
 	
-	@GetMapping("/{provincia_id}")
+	@GetMapping(path = "/{provincia_id}", produces = "application/json")
 	@ApiOperation("Buscar Municipios pela provincia_id")
 	@ApiResponse(code = 200, message = "Busca realizada com sucesso")
 	@ResponseStatus(HttpStatus.OK)
