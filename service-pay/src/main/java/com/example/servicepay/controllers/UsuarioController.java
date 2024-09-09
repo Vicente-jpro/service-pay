@@ -67,7 +67,7 @@ public class UsuarioController {
     	@ApiResponse( code = 201, message = "User saved sussefully."),
     	@ApiResponse( code = 401, message = "")
     })
-    @PostMapping
+    @PostMapping(path ="/", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO save( @RequestBody @Valid UserDTO userDTO ) throws MessagingException{
     	 UserModel user = new UserModel();
@@ -107,7 +107,7 @@ public class UsuarioController {
     	@ApiResponse( code = 201, message = "User saved sussefully."),
     	@ApiResponse( code = 401, message = "")
     })
-    @PostMapping("/account/confirmed/resend")
+    @PostMapping(path = "/account/confirmed/resend", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public void accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
     
@@ -127,7 +127,7 @@ public class UsuarioController {
 	    
 	    System.out.println(urlAccountConfirmation+tokenReceived.getToken());
   
-        
+         
     }
     
     @ApiOperation("Confirme account created")
@@ -135,7 +135,7 @@ public class UsuarioController {
     	@ApiResponse( code = 200, message = "Account confirmated successfully."),
     	@ApiResponse( code = 401, message = "Can not confirme your account. Token does not exit.")
     })
-    @PostMapping("/account/confirmed")
+    @PostMapping(path = "/account/confirmed", produces = "application/json")
     public void accountConfirm(@RequestParam("token") String token){
     
     	UserModel user = this.usuarioService.findByTokenConfirmAccount(token);

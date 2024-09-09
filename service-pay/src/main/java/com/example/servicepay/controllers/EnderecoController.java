@@ -35,7 +35,7 @@ public class EnderecoController {
 	private final EnderecoService enderecoService;
 	private final ModelMapper modelMapper;
 	
-	@PostMapping
+	@PostMapping(path = "/" , produces = "application/json", consumes = "application/json")
 	@ApiOperation("Salvar endereco")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiResponses({
@@ -57,7 +57,7 @@ public class EnderecoController {
 		
 	}
 	
-	@PatchMapping("/{id_endereco}")
+	@PatchMapping(path = "/{id_endereco}", produces = "application/json", consumes = "application/json")
 	@ApiOperation("Atualizar endereco pedo id.")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiResponses({
@@ -74,7 +74,7 @@ public class EnderecoController {
 	}
 	
 	
-	@GetMapping
+	@GetMapping(path = "/", produces = "application/json")
 	@ApiOperation("Buscar endereco pelo Usuario authenticado.")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiResponses({

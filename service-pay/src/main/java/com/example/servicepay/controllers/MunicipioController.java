@@ -31,7 +31,7 @@ public class MunicipioController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@GetMapping("/{id_provincia}/provincia")
+	@GetMapping(path = "/{id_provincia}/provincia",  produces = "application/json", consumes = "application/json")
 	@ApiOperation("Buscar todos os Municipios pelo id_provincia.")
 	@ApiResponse(code = 200, message = "Operacao de busca de Municipios realizada com sucesso.")
 	@ResponseStatus(HttpStatus.OK)
