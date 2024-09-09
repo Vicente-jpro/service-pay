@@ -3,6 +3,7 @@ package com.example.servicepay.controllers;
 import java.sql.SQLException;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.service.EnderecoService;
 import com.example.servicepay.util.CurrentUser;
 import com.example.servicepay.util.LoggedInUser;
+import com.example.servicepay.util.SelfLinkHateoas;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -48,7 +50,10 @@ public class EnderecoController {
 
 			Endereco endereco = enderecoService.salvar(enderecoDTO, currentUser.getUser());
 			EnderecoDto enderecoResponseDTO = modelMapper.map(endereco, EnderecoDto.class);
-
+			
+			Link selfLink = SelfLinkHateoas.getLink(EnderecoDto.class, enderecoResponseDTO.getId());
+			enderecoResponseDTO.add(selfLink);
+			
 			return enderecoResponseDTO;
 		} catch (Exception e) {
 			log.error("Usuario ja possue um endereco ID: "+currentUser.getUser().getId());
@@ -70,6 +75,10 @@ public class EnderecoController {
 		
 		Endereco enderecoSalvo = this.enderecoService.atualizar(enderecoRequestDTO, currentUser.getUser());
 		EnderecoDto enderecoResponseDto = modelMapper.map(enderecoSalvo, EnderecoDto.class);
+		
+		Link selfLink = SelfLinkHateoas.getLink(EnderecoDto.class, enderecoResponseDto.getId());
+		enderecoResponseDto.add(selfLink);
+		
 		return enderecoResponseDto;
 	}
 	
@@ -82,9 +91,12 @@ public class EnderecoController {
 		@ApiResponse(code = 404, message = "Parametro invalido")
 	})
 	public EnderecoDto findByUser(@LoggedInUser CurrentUser currentUser) {
-		
 		Endereco endereco = this.enderecoService.findByUser(currentUser.getUser());
 		EnderecoDto enderecoResponseDto = this.modelMapper.map(endereco, EnderecoDto.class);
+
+		Link selfLink = SelfLinkHateoas.getLink(EnderecoDto.class, enderecoResponseDto.getId());
+		enderecoResponseDto.add(selfLink);
+		
 		return enderecoResponseDto;
 	}
 	

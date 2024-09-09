@@ -1,6 +1,9 @@
 package com.example.servicepay.dto;
 
 
+import org.springframework.hateoas.RepresentationModel;
+
+import com.example.servicepay.entities.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnderecoDto {
+public class EnderecoDto extends RepresentationModel<EnderecoDto>{
 
 	@JsonProperty("id")
 	private Long id;
