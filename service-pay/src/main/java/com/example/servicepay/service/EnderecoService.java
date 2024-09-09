@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.example.servicepay.dto.EnderecoRequestDto;
+import com.example.servicepay.dto.EnderecoDto;
 import com.example.servicepay.entities.Endereco;
 import com.example.servicepay.entities.Municipio;
 import com.example.servicepay.entities.UserModel;
@@ -22,25 +22,27 @@ import lombok.extern.slf4j.Slf4j;
 public class EnderecoService {
 
 	private final EnderecoRepository enderecoRepository;
+	private final MunicipioService municipioService;
+	private final ProvinciaService provinciaService;
 	private final ModelMapper modelMapper;
 	
-	public Endereco salvar(EnderecoRequestDto enderecoRequestDTO, UserModel usuario) {
+	public Endereco salvar(EnderecoDto enderecoDTO, UserModel usuario) {
 		log.info("Salvando o endereco...");
 		
-		Endereco endereco = modelMapper.map(enderecoRequestDTO, Endereco.class);
-		Municipio municipio = modelMapper.map(enderecoRequestDTO.getMunicipio(), Municipio.class);
+		Endereco endereco = modelMapper.map(enderecoDTO, Endereco.class);
+		Municipio municipio = municipioService.findById(enderecoDTO.getMunicipio().getId());
 		endereco.setUser(usuario);
 		endereco.setMunicipio(municipio);
 		
 		return enderecoRepository.save(endereco);
 	}
 	
-	public Endereco atualizar(EnderecoRequestDto enderecoRequestDTO, UserModel user) {
+	public Endereco atualizar(EnderecoDto enderecoDTO, UserModel user) {
 		log.info("Atualizando o endereco...");		
 		Endereco enderecoSalvo = findByUser(user);
-		enderecoRequestDTO.setId(enderecoSalvo.getId());
+		enderecoDTO.setId(enderecoSalvo.getId());
 		
-		return this.salvar(enderecoRequestDTO, user);
+		return this.salvar(enderecoDTO, user);
 	}
 	
 	public Endereco findByUser( UserModel user) {

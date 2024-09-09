@@ -19,4 +19,7 @@ public class MunicipioDTO {
 	
 	@JsonProperty("nome_municipio")
 	private String nomeMunicipio;
+	
+	@JsonProperty("provincia")
+	private ProvinciaDTO provincia;
 }

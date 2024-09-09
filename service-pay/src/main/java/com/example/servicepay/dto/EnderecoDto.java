@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnderecoResponseDto {
+public class EnderecoDto {
 
 	@JsonProperty("id")
 	private Long id;
@@ -26,7 +26,7 @@ public class EnderecoResponseDto {
 	@JsonProperty("telemovel1")
 	private String telemovel1;
 	
-	@JsonProperty("telempvel2")
+	@JsonProperty("telemovel2")
 	private String telemovel2;
 	
 	@JsonProperty("municipio")

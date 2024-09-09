@@ -41,7 +41,7 @@ public class Endereco {
 	private Municipio municipio;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id", unique = true)
+	@JoinColumn(name = "user_id", unique = true, updatable = true)
 	private UserModel user;
 	
 

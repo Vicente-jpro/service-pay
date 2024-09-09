@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.servicepay.exceptions.EnderecoException;
+import com.example.servicepay.exceptions.MunicipioException;
 import com.example.servicepay.exceptions.RegraNegocioException;
 import com.example.servicepay.exceptions.UsuarioException;
 import com.example.servicepay.util.ApiErrors;
@@ -23,6 +24,16 @@ public class ApplicationControllerAdvice {
         String mensagemErro = ex.getMessage();
         return new ApiErrors(mensagemErro);
     }
+    
+    @ExceptionHandler(MunicipioException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleMunicipioException(MunicipioException ex){
+        String mensagemErro = ex.getMessage();
+        return new ApiErrors(mensagemErro);
+    }
+    
+    
+    
 
     @ExceptionHandler(UsuarioException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
