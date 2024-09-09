@@ -24,16 +24,16 @@ public class Endereco {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "morada1")
+	@Column(name = "morada1", length = 100)
 	private String morada1;
 
-	@Column(name = "morada2")
+	@Column(name = "morada2", length = 100)
 	private String morada2;
 	
-	@Column(name = "telemovel1", length = 20)
+	@Column(name = "telemovel1", length = 20, unique = true, updatable = true)
 	private String telemovel1;
 	
-	@Column(name = "telemovel2", length = 20)
+	@Column(name = "telemovel2", length = 20, unique = true, updatable = true)
 	private String telemovel2;
 	
 	@ManyToOne
