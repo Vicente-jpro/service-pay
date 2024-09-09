@@ -5,6 +5,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.example.servicepay.entities.Endereco;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonPropertyOrder({"id", "morada1", "morada2", "telemovel1", "telemovel2", "municipio"})
 public class EnderecoDto extends RepresentationModel<EnderecoDto>{
 
 	@JsonProperty("id")
