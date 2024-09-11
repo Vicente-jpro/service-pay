@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"id", "morada1", "morada2", "telemovel1", "telemovel2", "municipio"})
-public class EnderecoDto extends RepresentationModel<EnderecoDto>{
+public class EnderecoClienteDTO extends RepresentationModel<EnderecoClienteDTO>{
 
 	@JsonProperty("id")
 	private Long id;
