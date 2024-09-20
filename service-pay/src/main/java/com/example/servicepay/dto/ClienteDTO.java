@@ -1,5 +1,7 @@
 package com.example.servicepay.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -13,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"id", "nome_cliente", "email_cliente", "endereco_cliente"})
-public class ClienteDTO {
+public class ClienteDTO extends RepresentationModel<ClienteDTO>{
 
 	@JsonProperty("id")
 	private Long id;

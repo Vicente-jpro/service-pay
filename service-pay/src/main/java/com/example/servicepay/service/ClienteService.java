@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.servicepay.dto.ClienteDTO;
 import com.example.servicepay.entities.Cliente;
+import com.example.servicepay.entities.EnderecoCliente;
 import com.example.servicepay.entities.Municipio;
 import com.example.servicepay.exceptions.ClienteException;
 import com.example.servicepay.repositories.ClienteRepository;
@@ -18,15 +19,17 @@ import lombok.extern.slf4j.Slf4j;
 public class ClienteService {
 	
 	private final ModelMapper modelMapper;
-	private final ClienteRepository clienteRepository;
-	private final EnderecoClienteService enderecoClienteService;
 	private final MunicipioService municipioService;
-
+	private final ClienteRepository clienteRepository;
 	
 	public Cliente salvar(ClienteDTO clienteDTO) {
 		log.info("Salvando o cliente...");
 		Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
-		Municipio endereco = municipioService.findById(clienteDTO.getEnderecoCliente().getMunicipio().getId());
+		Municipio municipio = municipioService.findById(clienteDTO.getEnderecoCliente().getMunicipio().getId());
+		
+		EnderecoCliente enderecoCliente = modelMapper.map(clienteDTO.getEnderecoCliente(), EnderecoCliente.class);
+		enderecoCliente.setMunicipio(municipio);
+		cliente.setEnderecoCliente(enderecoCliente);
 		
 		return clienteRepository.save(cliente);
 	}
