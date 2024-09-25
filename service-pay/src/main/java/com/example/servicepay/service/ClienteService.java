@@ -3,7 +3,7 @@ package com.example.servicepay.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.example.servicepay.dto.ClienteDTO;
+import com.example.servicepay.dto.ClienteEnderecoDTO;
 import com.example.servicepay.entities.Cliente;
 import com.example.servicepay.entities.EnderecoCliente;
 import com.example.servicepay.entities.Municipio;
@@ -22,7 +22,7 @@ public class ClienteService {
 	private final MunicipioService municipioService;
 	private final ClienteRepository clienteRepository;
 	
-	public Cliente salvar(ClienteDTO clienteDTO) {
+	public Cliente salvar(ClienteEnderecoDTO clienteDTO) {
 		log.info("Salvando o cliente...");
 		Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
 		Municipio municipio = municipioService.findById(clienteDTO.getEnderecoCliente().getMunicipio().getId());
@@ -47,7 +47,20 @@ public class ClienteService {
 		
 	}
 	
-	public Cliente atualizar(ClienteDTO clienteDTO, Long idCliente) {
+	public Cliente findByEnderecoCliente(Long idCliente) {
+		log.info("Buscando o cliente e seu endereco com ID: {}", idCliente);
+		
+		Cliente cliente = this.clienteRepository.findByEnderecoCliente(idCliente);
+		if (cliente != null)
+			return cliente;
+		
+		log.error("Cliente nao foi encontrado. ID invalido: {}", idCliente);
+		throw new ClienteException("Cliente nao foi encontrado. ID invalido: "+idCliente);
+		
+	}
+	
+	
+	public Cliente atualizar(ClienteEnderecoDTO clienteDTO, Long idCliente) {
 		log.info("Atualizando o cliente com ID: {}", idCliente);
 		Cliente cliente = this.findById(idCliente);
 		clienteDTO.setId(idCliente);

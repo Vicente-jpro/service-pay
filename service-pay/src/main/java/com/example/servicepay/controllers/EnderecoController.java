@@ -1,10 +1,9 @@
 package com.example.servicepay.controllers;
 
-import java.sql.SQLException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +36,8 @@ public class EnderecoController {
 	private final EnderecoService enderecoService;
 	private final ModelMapper modelMapper;
 	
-	@PostMapping(path = "/" , produces = "application/json", consumes = "application/json")
+	@PostMapping(path = "/" , produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation("Salvar endereco")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiResponses({
@@ -62,7 +62,8 @@ public class EnderecoController {
 		
 	}
 	
-	@PatchMapping(path = "/{id_endereco}", produces = "application/json", consumes = "application/json")
+	@PatchMapping(path = "/{id_endereco}", produces = MediaType.APPLICATION_JSON_VALUE, 
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation("Atualizar endereco pedo id.")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiResponses({
@@ -83,7 +84,7 @@ public class EnderecoController {
 	}
 	
 	
-	@GetMapping(path = "/", produces = "application/json")
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation("Buscar endereco pelo Usuario authenticado.")
 	@ResponseStatus(HttpStatus.OK)
 	@ApiResponses({

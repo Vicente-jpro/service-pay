@@ -8,4 +8,6 @@ import com.example.servicepay.entities.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
+	Cliente findByEnderecoCliente(Long idCliente);
+	
 }
