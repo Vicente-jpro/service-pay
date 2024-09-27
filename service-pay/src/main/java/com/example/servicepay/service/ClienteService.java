@@ -63,7 +63,7 @@ public class ClienteService {
 	public Cliente atualizar(ClienteEnderecoDTO clienteDTO, Long idCliente) {
 		log.info("Atualizando o cliente com ID: {}", idCliente);
 		Cliente cliente = this.findById(idCliente);
-		clienteDTO.setId(idCliente);
+		clienteDTO.setId(cliente.getId());
 		
 		return this.salvar(clienteDTO);
 	}
