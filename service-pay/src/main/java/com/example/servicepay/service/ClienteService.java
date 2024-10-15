@@ -47,10 +47,10 @@ public class ClienteService {
 		
 	}
 	
-	public Cliente findByEnderecoCliente(Long idCliente) {
+	public Cliente findClienteWithEndereco(Long idCliente) {
 		log.info("Buscando o cliente e seu endereco com ID: {}", idCliente);
 		
-		Cliente cliente = this.clienteRepository.findByEnderecoCliente(idCliente);
+		Cliente cliente = this.clienteRepository.findClienteWithEndereco(idCliente);
 		if (cliente != null)
 			return cliente;
 		

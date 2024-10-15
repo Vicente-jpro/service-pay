@@ -5,6 +5,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +52,7 @@ public class ClienteController {
 		return client;
 		
 	}
+	
 	@GetMapping(path = "/{id_cliente}",produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "Cliente achado com sucesso."),
@@ -75,15 +77,35 @@ public class ClienteController {
 	})
 	@ResponseStatus(HttpStatus.OK)
 	@ApiOperation("Buscar cliente pelo id.")
-	public ClienteEnderecoDTO findByEnderecoCliente(@PathVariable("id_cliente") Long id) {
+	public ClienteEnderecoDTO findClienteWithEndereco(@PathVariable("id_cliente") Long id) {
 		
-		Cliente cliente = clienteService.findByEnderecoCliente(id);
+		Cliente cliente = clienteService.findClienteWithEndereco(id);
 		ClienteEnderecoDTO clienteDTO = modelMapper.map(cliente, ClienteEnderecoDTO.class);
 		Link link = SelfLinkHateoas.getLink(ClienteEnderecoDTO.class, id);
 		clienteDTO.add(link);
 		
 		return clienteDTO;
 	}
+	
+	@PatchMapping("/{id_cliente}/endereco")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Cliente atualizado com successo."),
+		@ApiResponse(code = 404, message = "Nao foi possivel atualizar o cliente com endereco.")
+	})
+	@ResponseStatus(HttpStatus.OK)
+	@ApiOperation("Atualizar endereco e cliente.")
+	public ClienteEnderecoDTO atualizar(
+			@RequestBody ClienteEnderecoDTO clienteDto, 
+			@PathVariable("id_cliente") Long idCliente) {
+		
+		Cliente cliente = this.clienteService.atualizar(clienteDto, idCliente);
+		ClienteEnderecoDTO clienteEnderecoDTO = modelMapper.map(cliente, ClienteEnderecoDTO.class);
+		
+		return clienteEnderecoDTO;
+	}
+	
+	
+	
 
 }
 
