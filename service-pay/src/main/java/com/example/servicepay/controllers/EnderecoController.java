@@ -21,9 +21,6 @@ import com.example.servicepay.util.CurrentUser;
 import com.example.servicepay.util.LoggedInUser;
 import com.example.servicepay.util.SelfLinkHateoas;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,12 +35,12 @@ public class EnderecoController {
 	
 	@PostMapping(path = "/" , produces = MediaType.APPLICATION_JSON_VALUE, 
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation("Salvar endereco")
+	//@ApiOperation("Salvar endereco")
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiResponses({
-		@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
-		@ApiResponse(code = 404, message = "Erro ao salvar o contacto." )
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
+		//@ApiResponse(code = 404, message = "Erro ao salvar o contacto." )
+	//})
 	public EnderecoDto salvar(@RequestBody EnderecoDto enderecoDTO, 
 			@LoggedInUser CurrentUser currentUser) {
 		try {
@@ -64,12 +61,12 @@ public class EnderecoController {
 	
 	@PatchMapping(path = "/{id_endereco}", produces = MediaType.APPLICATION_JSON_VALUE, 
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation("Atualizar endereco pedo id.")
+	//@ApiOperation("Atualizar endereco pedo id.")
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiResponses({
-		@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
-		@ApiResponse(code = 404, message = "Erro ao salvar o contacto.")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 201, message = "Contacto salvo com sucesso."),
+		//@ApiResponse(code = 404, message = "Erro ao salvar o contacto.")
+	//})
 	public EnderecoDto atualizar(@RequestBody EnderecoDto enderecoRequestDTO, 
 			@PathVariable("id_endereco") Long idEndereco,
 			@LoggedInUser CurrentUser currentUser) {	
@@ -85,12 +82,12 @@ public class EnderecoController {
 	
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation("Buscar endereco pelo Usuario authenticado.")
+	//@ApiOperation("Buscar endereco pelo Usuario authenticado.")
 	@ResponseStatus(HttpStatus.OK)
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Endereco encontrado com sucesso."), 
-		@ApiResponse(code = 404, message = "Parametro invalido")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Endereco encontrado com sucesso."), 
+		//@ApiResponse(code = 404, message = "Parametro invalido")
+	//})
 	public EnderecoDto findByUser(@LoggedInUser CurrentUser currentUser) {
 		Endereco endereco = this.enderecoService.findByUser(currentUser.getUser());
 		EnderecoDto enderecoResponseDto = this.modelMapper.map(endereco, EnderecoDto.class);

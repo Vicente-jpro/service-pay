@@ -1,7 +1,5 @@
 package com.example.servicepay.service;
 
-import javax.transaction.Transactional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +10,7 @@ import com.example.servicepay.entities.UserModel;
 import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.repositories.EnderecoRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

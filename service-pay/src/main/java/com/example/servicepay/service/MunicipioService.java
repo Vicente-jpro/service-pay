@@ -2,8 +2,6 @@ package com.example.servicepay.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.servicepay.entities.Municipio;
@@ -11,6 +9,7 @@ import com.example.servicepay.entities.Provincia;
 import com.example.servicepay.exceptions.MunicipioException;
 import com.example.servicepay.repositories.MunicipioRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

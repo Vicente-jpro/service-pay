@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
     	
     }
 
-    public UserDetails  autenticar( UserModel usuario ){
+    public UserDetails autenticar( UserModel usuario ){
     	log.info("Authenticating the user..."); 
         UserDetails user = loadUserByUsername(usuario.getEmail());
         

@@ -29,7 +29,6 @@ public class EmailConfig {
 	    mailSender.setHost(host);
 	    mailSender.setPort(port);
 	    
-	    
 	    mailSender.setUsername(username);
 	    mailSender.setPassword(password);
 	    
@@ -38,7 +37,6 @@ public class EmailConfig {
 	    props.put("mail.smtp.auth", "false");
 	    props.put("mail.smtp.starttls.enable", "false");
 	    props.put("mail.debug", "true");
-	    
 	    
 	    return mailSender;
 	}
