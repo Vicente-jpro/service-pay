@@ -49,9 +49,19 @@ spring:
         enable: false
 
 # Swegger
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+ # mvc:
+   # pathmatch:
+   #   matching-strategy: ANT_PATH_MATCHER
+
+springdoc: 
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: true
+
+  #show-actuator: true
+
 
 # Spring Security and token JWT
 security:
