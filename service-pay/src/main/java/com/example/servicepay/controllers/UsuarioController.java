@@ -217,9 +217,6 @@ public class UsuarioController {
             this.usuarioService.salvar(usuarioAutenticado);
             
             //Send email to the user with this address.
-            
-    	    //Send email to the user with this address.
-
     	    Map<String, Object> messageTemplate = new HashMap<>();
     	    messageTemplate.put("username", usuarioAutenticado.getName());
     	    messageTemplate.put("link_reset_password_token", urlAccountReset+tokenReceived.getToken());

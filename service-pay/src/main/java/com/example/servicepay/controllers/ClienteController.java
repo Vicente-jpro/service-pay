@@ -18,9 +18,11 @@ import com.example.servicepay.entities.Cliente;
 import com.example.servicepay.service.ClienteService;
 import com.example.servicepay.util.SelfLinkHateoas;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-//@Api("ClienteController")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/clientes")
@@ -32,10 +34,10 @@ public class ClienteController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	//@ApiResponses({
-		//@ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
-		//@ApiResponse(code = 404, message = "Nao foi possivel salvar o cliente.")
-	//})
+	@ApiResponses({
+		@ApiResponse(responseCode = "201", description = "Cliente salvo com sucesso."),
+		@ApiResponse(responseCode = "404", description = "Nao foi possivel salvar o cliente.")
+	})
 	@ResponseStatus(HttpStatus.CREATED)
 	public ClienteEnderecoDTO salvar(@RequestBody ClienteEnderecoDTO clienteDTO) {
 		

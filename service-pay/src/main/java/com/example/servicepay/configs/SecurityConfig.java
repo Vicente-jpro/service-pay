@@ -55,8 +55,8 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration{
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                     //.requestMatchers("/swagger-ui/**")
-                       // .permitAll()
+                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/actuator/**")
+                        .permitAll()
                      .requestMatchers("/items/**")
                         .hasAnyRole("USER", "ADMIN")
                      .requestMatchers("/stock_movements/**")
