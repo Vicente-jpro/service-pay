@@ -18,13 +18,9 @@ import com.example.servicepay.entities.Cliente;
 import com.example.servicepay.service.ClienteService;
 import com.example.servicepay.util.SelfLinkHateoas;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api("ClienteController")
+//@Api("ClienteController")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/clientes")
@@ -36,10 +32,10 @@ public class ClienteController {
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses({
-		@ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
-		@ApiResponse(code = 404, message = "Nao foi possivel salvar o cliente.")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 201, message = "Cliente salvo com sucesso."),
+		//@ApiResponse(code = 404, message = "Nao foi possivel salvar o cliente.")
+	//})
 	@ResponseStatus(HttpStatus.CREATED)
 	public ClienteEnderecoDTO salvar(@RequestBody ClienteEnderecoDTO clienteDTO) {
 		
@@ -54,12 +50,12 @@ public class ClienteController {
 	}
 	
 	@GetMapping(path = "/{id_cliente}",produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Cliente achado com sucesso."),
-		@ApiResponse(code = 404, message = "Cliente nao foi encontrado.")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Cliente achado com sucesso."),
+		//@ApiResponse(code = 404, message = "Cliente nao foi encontrado.")
+	//})
 	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation("Buscar cliente pelo id.")
+	//@ApiOperation("Buscar cliente pelo id.")
 	public ClienteEnderecoDTO findById(@PathVariable("id_cliente") Long id) {
 		
 		Cliente cliente = clienteService.findById(id);
@@ -71,12 +67,12 @@ public class ClienteController {
 	}
 	
 	@GetMapping(path = "/{id_cliente}/endereco", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Cliente achado com sucesso."),
-		@ApiResponse(code = 404, message = "Cliente nao foi encontrado.")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Cliente achado com sucesso."),
+		//@ApiResponse(code = 404, message = "Cliente nao foi encontrado.")
+	//})
 	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation("Buscar cliente pelo id.")
+	//@ApiOperation("Buscar cliente pelo id.")
 	public ClienteEnderecoDTO findClienteWithEndereco(@PathVariable("id_cliente") Long id) {
 		
 		Cliente cliente = clienteService.findClienteWithEndereco(id);
@@ -88,12 +84,12 @@ public class ClienteController {
 	}
 	
 	@PatchMapping("/{id_cliente}/endereco")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Cliente atualizado com successo."),
-		@ApiResponse(code = 404, message = "Nao foi possivel atualizar o cliente com endereco.")
-	})
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Cliente atualizado com successo."),
+		//@ApiResponse(code = 404, message = "Nao foi possivel atualizar o cliente com endereco.")
+	//})
 	@ResponseStatus(HttpStatus.OK)
-	@ApiOperation("Atualizar endereco e cliente.")
+	//@ApiOperation("Atualizar endereco e cliente.")
 	public ClienteEnderecoDTO atualizar(
 			@RequestBody ClienteEnderecoDTO clienteDto, 
 			@PathVariable("id_cliente") Long idCliente) {

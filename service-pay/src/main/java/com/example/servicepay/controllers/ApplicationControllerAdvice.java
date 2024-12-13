@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.exceptions.MunicipioException;
 import com.example.servicepay.exceptions.RegraNegocioException;
+import com.example.servicepay.exceptions.SenhaInvalidaException;
 import com.example.servicepay.exceptions.UsuarioException;
 import com.example.servicepay.util.ApiErrors;
 
@@ -32,6 +34,12 @@ public class ApplicationControllerAdvice {
         return new ApiErrors(mensagemErro);
     }
     
+    @ExceptionHandler({SenhaInvalidaException.class, UsernameNotFoundException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiErrors handleSenhaInvalidaException(SenhaInvalidaException ex){
+        String mensagemErro = ex.getMessage();
+        return new ApiErrors(mensagemErro);
+    }
     
     
 

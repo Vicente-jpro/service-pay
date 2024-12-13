@@ -1,18 +1,11 @@
 package com.example.servicepay.service;
 
-import javax.transaction.Transactional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.example.servicepay.dto.EnderecoClienteDTO;
-import com.example.servicepay.entities.Endereco;
-import com.example.servicepay.entities.EnderecoCliente;
-import com.example.servicepay.entities.Municipio;
-import com.example.servicepay.entities.UserModel;
-import com.example.servicepay.exceptions.EnderecoException;
 import com.example.servicepay.repositories.EnderecoClienteRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,7 +1,7 @@
 package com.example.servicepay.controllers;
 
-import javax.mail.MessagingException;
-import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,16 +34,16 @@ import com.example.servicepay.service.EmailService;
 import com.example.servicepay.service.UsuarioServiceImpl;
 import com.example.servicepay.util.CurrentUser;
 import com.example.servicepay.util.LoggedInUser;
+import com.example.servicepay.util.TemplateName;
 import com.example.servicepay.util.TokenUtil;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ApiOperation("User Authentication")
+//@ApiOperation("User Authentication")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -64,11 +64,11 @@ public class UsuarioController {
     
     
         	  
-    @ApiOperation("Save a user and send email to confirm account.")
-    @ApiResponses({
-    	@ApiResponse( code = 201, message = "User saved sussefully."),
-    	@ApiResponse( code = 401, message = "")
-    })
+    //@ApiOperation("Save a user and send email to confirm account.")
+    //@ApiResponses({
+    	//@ApiResponse( code = 201, message = "User saved sussefully."),
+    	//@ApiResponse( code = 401, message = "")
+    //})
     @PostMapping(produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDTO save( @RequestBody @Valid UserDTO userDTO ) throws MessagingException{
@@ -91,9 +91,16 @@ public class UsuarioController {
             userSaved = usuarioService.salvar(user);
     
 	        //Send email to the user with this address.
-	        emailService.sendEmailWithLink(userSaved.getEmail(), "CONFIRM ACCOUNT INSTRUCTION",
-	        		urlAccountConfirmation+userSaved.getTokenConfirmedAccount());
-	        
+	    
+		    Map<String, Object> messageTemplate = new HashMap<>();
+		    messageTemplate.put("link_with_confirmation_token", urlAccountConfirmation+userSaved.getTokenConfirmedAccount());
+		    messageTemplate.put("username", userSaved.getName());
+		    
+		    emailService.sendEmail(
+		    		userSaved.getEmail(), 
+		    		"CONFIRM ACCOUNT INSTRUCTION", 
+		    		TemplateName.CONFIRMATION_INSTRUCTIONS, messageTemplate);
+		    
 	        userDTO.setId(userSaved.getId());
 	        UserResponseDTO useResponseDto = modelMapper.map(userDTO, UserResponseDTO.class);
 	        return useResponseDto;
@@ -104,14 +111,14 @@ public class UsuarioController {
     }
     
     
-    @ApiOperation("Resend account confirmed email to confirm account.")
-    @ApiResponses({
-    	@ApiResponse( code = 201, message = "User saved sussefully."),
-    	@ApiResponse( code = 401, message = "")
-    })
+    //@ApiOperation("Resend account confirmed email to confirm account.")
+    //@ApiResponses({
+    	//@ApiResponse( code = 201, message = "User saved sussefully."),
+    	//@ApiResponse( code = 401, message = "")
+    //})
     @PostMapping(path = "/account/confirmed/resend", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public AuthMessageDTO accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
+    public AuthMessageDTO accountConfirmedResend(@Valid @RequestBody UserEmailDTO userEmail ) throws MessagingException{
     
     	UserModel usuario = new UserModel();
         usuario.setEmail(userEmail.getEmail());
@@ -124,8 +131,16 @@ public class UsuarioController {
 	    this.usuarioService.salvar(usuarioAutenticado);
 	    
 	    //Send email to the user with this address.
-	    emailService.sendEmailWithLink(usuarioAutenticado.getEmail(), "CONFIRM ACCOUNT INSTRUCTION",
-	    		urlAccountConfirmation+tokenReceived.getToken());
+
+	    Map<String, Object> messageTemplate = new HashMap<>();
+	    messageTemplate.put("username", usuarioAutenticado.getName());
+	    messageTemplate.put("link_with_confirmation_token", urlAccountConfirmation+tokenReceived.getToken());
+	   
+	    emailService.sendEmail(
+	    		usuarioAutenticado.getEmail(), 
+	    		"CONFIRM ACCOUNT INSTRUCTION", 
+	    		TemplateName.CONFIRMATION_INSTRUCTIONS, messageTemplate);
+	    
 	    
 	    System.out.println(urlAccountConfirmation+tokenReceived.getToken());
   
@@ -136,11 +151,11 @@ public class UsuarioController {
          
     }
     
-    @ApiOperation("Confirme account created")
-    @ApiResponses({
-    	@ApiResponse( code = 200, message = "Account confirmated successfully."),
-    	@ApiResponse( code = 401, message = "Can not confirme your account. Token does not exit.")
-    })
+    //@ApiOperation("Confirme account created")
+    //@ApiResponses({
+    	//@ApiResponse( code = 200, message = "Account confirmated successfully."),
+    	//@ApiResponse( code = 401, message = "Can not confirme your account. Token does not exit.")
+    //})
     @PostMapping(path = "/account/confirmed", produces = "application/json")
     public AuthMessageDTO accountConfirm(@RequestParam("token") String token){
     
@@ -149,11 +164,10 @@ public class UsuarioController {
     	   user.setActivated(true);
      	   this.usuarioService.salvar(user);
     	}else {	
-    	log.error("Password is diferent");
-    	throw new UsuarioException("Password is diferent.");
+    	log.error("User does not exist or token has exprired.");
+    	throw new UsuarioException("User do not exist or token has exprired.");
     	}
     	
-
 	    return AuthMessageDTO
 	    		.builder()
 	    			.message("Your account was successfully confirmed.")
@@ -161,13 +175,13 @@ public class UsuarioController {
     }
     
 
-    @ApiOperation("Authenticate the user and return a token to access API resourses.")
-    @ApiResponses({
-    	@ApiResponse( code = 200, message = "User authenticated successfully."),
-    	@ApiResponse( code = 401, message = "Can invalide credential or you need to verificate your account to access.")
-    })
+    //@ApiOperation("Authenticate the user and return a token to access API resourses.")
+    //@ApiResponses({
+    	//@ApiResponse( code = 200, message = "User authenticated successfully."),
+    	//@ApiResponse( code = 401, message = "Can invalide credential or you need to verificate your account to access.")
+    //})
     @PostMapping("/auth")
-    public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
+    public TokenDTO autenticar(@Valid @RequestBody CredenciaisDTO credenciais){
         try{
             
         	UserModel usuario = new UserModel();
@@ -179,17 +193,17 @@ public class UsuarioController {
             String token = jwtService.gerarToken(usuario);
             return new TokenDTO(usuario.getEmail(), token);
         } catch (UsernameNotFoundException | SenhaInvalidaException e ){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        	throw new SenhaInvalidaException();
         }
     }
     
-    @ApiOperation("Verify if user exist and send the reset password instructions.")
-    @ApiResponses({
-    	@ApiResponse( code = 200, message = "Instruction sent successfully."),
-    	@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
-    })
+    //@ApiOperation("Verify if user exist and send the reset password instructions.")
+    //@ApiResponses({
+    	//@ApiResponse( code = 200, message = "Instruction sent successfully."),
+    	//@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
+    //})
     @PostMapping("/password/new")
-    public AuthMessageDTO passowrdNew(@RequestBody UserEmailDTO userEmail) throws MessagingException{
+    public AuthMessageDTO passwordNew(@RequestBody UserEmailDTO userEmail) throws MessagingException{
         try{
             
         	UserModel usuario = new UserModel();
@@ -203,8 +217,17 @@ public class UsuarioController {
             this.usuarioService.salvar(usuarioAutenticado);
             
             //Send email to the user with this address.
-            emailService.sendEmailWithLink(usuarioAutenticado.getEmail(), "PASSWORD RESET INSTRUCTION",
-            		urlAccountReset+tokenReceived.getToken());
+            
+    	    //Send email to the user with this address.
+
+    	    Map<String, Object> messageTemplate = new HashMap<>();
+    	    messageTemplate.put("username", usuarioAutenticado.getName());
+    	    messageTemplate.put("link_reset_password_token", urlAccountReset+tokenReceived.getToken());
+    	   
+    	    emailService.sendEmail(
+    	    		usuarioAutenticado.getEmail(), 
+    	    		 "RESET PASSWORD INSTRUCTION", 
+    	    		TemplateName.RESET_PASSWORD_INSTRUCTIONS, messageTemplate);
             
             System.out.println(urlAccountReset+tokenReceived.getToken());
             
@@ -220,11 +243,11 @@ public class UsuarioController {
     }
     
 
-    @ApiOperation("Verify if user TokenResetPassword exist and change the password.")
-    @ApiResponses({
-    	@ApiResponse( code = 200, message = "Instruction sent successfully."),
-    	@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
-    })
+    //@ApiOperation("Verify if user TokenResetPassword exist and change the password.")
+    //@ApiResponses({
+    	//@ApiResponse( code = 200, message = "Instruction sent successfully."),
+    	//@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
+    //})
     @PostMapping("/password/reset")
     public AuthMessageDTO passowrdReset(@RequestBody UserPasswordRestDTO userPasswordRestDTO, @RequestParam("token") String token){
     

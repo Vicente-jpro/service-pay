@@ -17,8 +17,6 @@ import com.example.servicepay.dto.MunicipioProvinciaDTO;
 import com.example.servicepay.entities.Municipio;
 import com.example.servicepay.service.MunicipioService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 
@@ -32,8 +30,8 @@ public class MunicipioController {
 	private ModelMapper modelMapper;
 	
 	@GetMapping(path = "/{id_provincia}/provincia",  produces = "application/json", consumes = "application/json")
-	@ApiOperation("Buscar todos os Municipios pelo id_provincia.")
-	@ApiResponse(code = 200, message = "Operacao de busca de Municipios realizada com sucesso.")
+	//@ApiOperation("Buscar todos os Municipios pelo id_provincia.")
+	//@ApiResponse(code = 200, message = "Operacao de busca de Municipios realizada com sucesso.")
 	@ResponseStatus(HttpStatus.OK)
 	public List<MunicipioProvinciaDTO> getMunicipiosAndProvinciaId(@PathVariable("id_provincia") Long idProvincia){
 		
@@ -50,8 +48,8 @@ public class MunicipioController {
 	}
 	
 	@GetMapping(path = "/{provincia_id}", produces = "application/json")
-	@ApiOperation("Buscar Municipios pela provincia_id")
-	@ApiResponse(code = 200, message = "Busca realizada com sucesso")
+	//@ApiOperation("Buscar Municipios pela provincia_id")
+	//@ApiResponse(code = 200, message = "Busca realizada com sucesso")
 	@ResponseStatus(HttpStatus.OK)
 	public List<MunicipioDTO> getMunicipiosByProvincia(@PathVariable("provincia_id") Long idProvincia){
 		List<Municipio> municipios = municipioService.getMunicipiosAndProvinciaId(idProvincia);

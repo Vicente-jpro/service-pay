@@ -63,7 +63,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
 	            throw new UsuarioException("User Authenticatication: You must to activate your account using the link we sent by email.");
         	}
         }
-        log.error("User Authenticatication: Invalid credentials.");
+        log.error("Email/Password is not correct.");
         throw new SenhaInvalidaException();
     }
     

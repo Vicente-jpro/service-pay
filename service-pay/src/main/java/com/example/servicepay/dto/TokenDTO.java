@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenDTO {
+	
 	@JsonProperty("email")
     private String email;
 	

@@ -2,14 +2,13 @@ package com.example.servicepay.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 import com.example.servicepay.entities.Provincia;
 import com.example.servicepay.exceptions.ProvinciaNotFoundException;
 import com.example.servicepay.repositories.ProvinciaRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email instruction</title>
+</head>
+<body>
+    <h1>Hello <span th:text="${username}"></span>! </h1>
+	<br>
+	
+	<p>You can confirm your account email through the link below:</p>
+	
+	<p>
+		<!--
+		<a th:href="@{/category/edit/{id}(id=${category.idCategory})}">view</a>
+		-->
+		<a th:href="${link_with_confirmation_token}"> 
+			<span>
+				Clique here to confirme your account.
+			</span>
+		</a>
+	</p>
+	<br>
+	Clique here to confirme your account.
+	<p>
+		<a th:href="${link_with_confirmation_token}"> 
+			<span th:text="${link_with_confirmation_token}"></span>
+		</a>
+	</p>
+	
+</body>
+</html>

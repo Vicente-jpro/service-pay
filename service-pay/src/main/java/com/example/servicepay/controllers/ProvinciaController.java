@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.servicepay.entities.Provincia;
 import com.example.servicepay.service.ProvinciaService;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,10 +22,10 @@ public class ProvinciaController {
 	private final ProvinciaService provinciaService;
 	
 	@GetMapping( produces = "application/json")
-	@ApiOperation("Buscar todas as provincias")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Busca efetuada com sucesso")
-	})
+	//@ApiOperation("Buscar todas as provincias")
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Busca efetuada com sucesso")
+	//})
 	@ResponseStatus(HttpStatus.OK)
 	public List<Provincia> getProvincias(){
 		return provinciaService.getProvincias();
@@ -36,11 +33,11 @@ public class ProvinciaController {
 	
 	
 	@GetMapping(path = "/{id}", produces = "application/json")
-	@ApiOperation("Buscar provincia pelo id.")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Busca da provincia efetuada com sucesso"),
-		@ApiResponse(code = 404, message = "Provincia nao encontrada")
-	})
+	//@ApiOperation("Buscar provincia pelo id.")
+	//@ApiResponses({
+		//@ApiResponse(code = 200, message = "Busca da provincia efetuada com sucesso"),
+		//@ApiResponse(code = 404, message = "Provincia nao encontrada")
+	//})
 	@ResponseStatus(HttpStatus.OK)
 	public Provincia getProvinciaById(@PathVariable("id") Long idProvincia) {
 		return provinciaService.getProvinciaById(idProvincia);
