@@ -1,6 +1,8 @@
 package com.example.servicepay.dto;
 
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -15,5 +17,6 @@ import lombok.NoArgsConstructor;
 public class UserEmailDTO {
 	
 	@JsonProperty("email")
+	@NotBlank(message = "Field Email can not be blank.")
 	private String email; 
 }

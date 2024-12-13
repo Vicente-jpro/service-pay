@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
     	
     }
 
-    public UserDetails autenticar( UserModel usuario ){
+    public UserDetails  autenticar( UserModel usuario ){
     	log.info("Authenticating the user..."); 
         UserDetails user = loadUserByUsername(usuario.getEmail());
         
@@ -63,7 +63,7 @@ public class UsuarioServiceImpl implements UserDetailsService {
 	            throw new UsuarioException("User Authenticatication: You must to activate your account using the link we sent by email.");
         	}
         }
-        log.error("User Authenticatication: Invalid credentials.");
+        log.error("Email/Password is not correct.");
         throw new SenhaInvalidaException();
     }
     

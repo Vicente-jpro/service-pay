@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -111,7 +112,7 @@ public class UsuarioController {
     })
     @PostMapping(path = "/account/confirmed/resend", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public AuthMessageDTO accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
+    public AuthMessageDTO accountConfirmedResend(@Valid @RequestBody UserEmailDTO userEmail ) throws MessagingException{
     
     	UserModel usuario = new UserModel();
         usuario.setEmail(userEmail.getEmail());
@@ -167,7 +168,7 @@ public class UsuarioController {
     	@ApiResponse( code = 401, message = "Can invalide credential or you need to verificate your account to access.")
     })
     @PostMapping("/auth")
-    public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais){
+    public TokenDTO autenticar(@Valid @RequestBody CredenciaisDTO credenciais){
         try{
             
         	UserModel usuario = new UserModel();
@@ -179,7 +180,7 @@ public class UsuarioController {
             String token = jwtService.gerarToken(usuario);
             return new TokenDTO(usuario.getEmail(), token);
         } catch (UsernameNotFoundException | SenhaInvalidaException e ){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        	throw new SenhaInvalidaException();
         }
     }
     
