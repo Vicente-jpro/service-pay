@@ -62,5 +62,6 @@ public class CurrentUser implements UserDetails {
     public boolean isEnabled() {
       return true;
     }
+    
 
 }
