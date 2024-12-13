@@ -23,15 +23,16 @@ public class CurrentUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-    	  String[] roles = user.isAdmin() ?
-                  new String[]{"ADMIN", "USER"} : new String[]{"USER"};
-    	if(roles.length > 0)
-    		return AuthorityUtils.createAuthorityList("ROLE_"+roles[0], "ROLE_"+roles[1]);
-    	else
-    		return AuthorityUtils.createAuthorityList("ROLE_"+roles[0]);
     	
-    
+    	String[] userRoles = new String[user.getRoles().size() ];
+    	
+    	for(int i = 0; i < userRoles.length; i++) {
+    		userRoles[i] = "ROLE_"+user.getRoles().get(i).getName();
+    	}
+    	return AuthorityUtils.createAuthorityList(userRoles);
+    	
     }
+    
     @Override
     public String getPassword() {
       return this.user.getPassword();

@@ -27,6 +27,7 @@ public class EnderecoClienteService {
 	private final ProvinciaService provinciaService;
 	private final ModelMapper modelMapper;
 	
+	/*
 	public EnderecoCliente salvar(EnderecoClienteDTO enderecoDTO, UserModel usuario) {
 		log.info("Salvando o endereco do cliente...");
 		
@@ -58,6 +59,7 @@ public class EnderecoClienteService {
 		return endereco;
 	}
 	
+	*/
 
 	
 }

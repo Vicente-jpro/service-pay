@@ -110,14 +110,17 @@ public class UsuarioServiceImpl implements UserDetailsService {
     	UserModel usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
 
-        String[] roles = usuario.isAdmin() ?
-                new String[]{"ADMIN", "USER"} : new String[]{"USER"};
-
+	String[] userRoles = new String[usuario.getRoles().size() ];
+    	
+    	for(int i = 0; i < userRoles.length; i++) {
+    		userRoles[i] = usuario.getRoles().get(i).getName();
+    	}
+    	
 		UserDetails user = User
 				.builder()
 				.username(usuario.getEmail())
 				.password(usuario.getPassword())
-				.roles(roles)
+				.roles(userRoles)
 				.build();
 
 		return new CurrentUser(usuario);

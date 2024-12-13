@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"id", "nome_cliente", "email_cliente", "endereco_cliente"})
-public class ClienteDTO extends RepresentationModel<ClienteDTO>{
+public class ClienteEnderecoDTO extends RepresentationModel<ClienteEnderecoDTO>{
 
 	@JsonProperty("id")
 	private Long id;
@@ -25,5 +25,7 @@ public class ClienteDTO extends RepresentationModel<ClienteDTO>{
 	
 	@JsonProperty("email_cliente")
 	private String email;
-
+	
+	@JsonProperty("endereco_cliente")
+    private EnderecoClienteDTO enderecoCliente;
 }

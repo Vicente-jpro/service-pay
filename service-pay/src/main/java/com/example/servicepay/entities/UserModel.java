@@ -2,7 +2,10 @@ package com.example.servicepay.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.criteria.Order;
@@ -45,9 +49,12 @@ public class UserModel implements Serializable {
     @Column(name = "passwrd")
     @NotEmpty(message = "Password can not be empty.")
     private String password;
-    
+    /*
     @Column(name = "admin")
     private boolean admin;
+    */
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles = new ArrayList<Role>();
     
     @Column(name = "activated")
     private boolean activated;

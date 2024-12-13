@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.servicepay.dto.AuthMessageDTO;
 import com.example.servicepay.dto.CredenciaisDTO;
 import com.example.servicepay.dto.TokenDTO;
 import com.example.servicepay.dto.UserDTO;
@@ -32,6 +33,7 @@ import com.example.servicepay.security.jwt.JwtService;
 import com.example.servicepay.service.EmailService;
 import com.example.servicepay.service.UsuarioServiceImpl;
 import com.example.servicepay.util.CurrentUser;
+import com.example.servicepay.util.LoggedInUser;
 import com.example.servicepay.util.TokenUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ApiOperation("User Authentication")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -109,7 +111,7 @@ public class UsuarioController {
     })
     @PostMapping(path = "/account/confirmed/resend", produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public void accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
+    public AuthMessageDTO accountConfirmedResend( @RequestBody UserEmailDTO userEmail ) throws MessagingException{
     
     	UserModel usuario = new UserModel();
         usuario.setEmail(userEmail.getEmail());
@@ -127,6 +129,10 @@ public class UsuarioController {
 	    
 	    System.out.println(urlAccountConfirmation+tokenReceived.getToken());
   
+	    return AuthMessageDTO
+	    		.builder()
+	    			.message("An email confirmation was sent to you.")
+	    		.build();
          
     }
     
@@ -136,7 +142,7 @@ public class UsuarioController {
     	@ApiResponse( code = 401, message = "Can not confirme your account. Token does not exit.")
     })
     @PostMapping(path = "/account/confirmed", produces = "application/json")
-    public void accountConfirm(@RequestParam("token") String token){
+    public AuthMessageDTO accountConfirm(@RequestParam("token") String token){
     
     	UserModel user = this.usuarioService.findByTokenConfirmAccount(token);
     	if(user != null) {
@@ -146,6 +152,12 @@ public class UsuarioController {
     	log.error("Password is diferent");
     	throw new UsuarioException("Password is diferent.");
     	}
+    	
+
+	    return AuthMessageDTO
+	    		.builder()
+	    			.message("Your account was successfully confirmed.")
+	    		.build();
     }
     
 
@@ -177,7 +189,7 @@ public class UsuarioController {
     	@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
     })
     @PostMapping("/password/new")
-    public void passowrdNew(@RequestBody UserEmailDTO userEmail) throws MessagingException{
+    public AuthMessageDTO passowrdNew(@RequestBody UserEmailDTO userEmail) throws MessagingException{
         try{
             
         	UserModel usuario = new UserModel();
@@ -200,6 +212,11 @@ public class UsuarioController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 
+	    return AuthMessageDTO
+	    		.builder()
+	    			.message("We sent an email instruction to reset your password. Please open your email and click de link.")
+	    		.build();
+
     }
     
 
@@ -209,7 +226,7 @@ public class UsuarioController {
     	@ApiResponse( code = 401, message = "Cannot send the email instructions to create a new password.")
     })
     @PostMapping("/password/reset")
-    public void passowrdReset(@RequestBody UserPasswordRestDTO userPasswordRestDTO, @RequestParam("token") String token){
+    public AuthMessageDTO passowrdReset(@RequestBody UserPasswordRestDTO userPasswordRestDTO, @RequestParam("token") String token){
     
     	UserModel user = this.usuarioService.findByTokenResetPassword(token);
     	boolean tokenEquals = user.isTokenEquals(user.getTokenResetPassword(), token);
@@ -233,14 +250,18 @@ public class UsuarioController {
     		}
     	}
 
+	    return AuthMessageDTO
+	    		.builder()
+	    			.message("Your password was successfully updated.")
+	    		.build();
     }
     
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
+    
     @GetMapping("/current_user")
-	public CurrentUser getAuthenticatedUser(Authentication authentication) {
-		CurrentUser user = modelMapper.map(authentication.getPrincipal(), CurrentUser. class);
-		if (user != null)
-			return user;
-		throw new UsernameNotFoundException("You need to loggin before authenticate.");
+	public CurrentUser getAuthenticatedUser(@LoggedInUser CurrentUser authentication) {
+	
+			return authentication;
 	}
 
 }

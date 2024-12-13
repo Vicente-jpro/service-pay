@@ -1,7 +1,6 @@
 package com.example.servicepay.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
