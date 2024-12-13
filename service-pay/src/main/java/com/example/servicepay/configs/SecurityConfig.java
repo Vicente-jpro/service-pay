@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable()
             .authorizeRequests()
+            	//.antMatchers("/")
+            		//.hasAnyAuthority("MODERATOR")
             	.antMatchers("/swagger-ui/**")
             		.permitAll()
             	.antMatchers("/clientes/**")
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasAnyRole("USER", "ADMIN")
                 .antMatchers("/municipios/**")
                 	.hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/user/**")
+                .antMatchers(HttpMethod.POST, "/users/**")
                     .permitAll()
                 .anyRequest().authenticated()
             .and()

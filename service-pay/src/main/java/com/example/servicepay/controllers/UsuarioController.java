@@ -1,11 +1,14 @@
 package com.example.servicepay.controllers;
 
+import javax.annotation.security.RolesAllowed;
 import javax.mail.MessagingException;
+import javax.management.relation.RoleStatus;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,13 +28,16 @@ import com.example.servicepay.dto.UserDTO;
 import com.example.servicepay.dto.UserEmailDTO;
 import com.example.servicepay.dto.UserPasswordRestDTO;
 import com.example.servicepay.dto.UserResponseDTO;
+import com.example.servicepay.entities.Role;
 import com.example.servicepay.entities.UserModel;
+import com.example.servicepay.enums.UserRoles;
 import com.example.servicepay.exceptions.SenhaInvalidaException;
 import com.example.servicepay.exceptions.UsuarioException;
 import com.example.servicepay.security.jwt.JwtService;
 import com.example.servicepay.service.EmailService;
 import com.example.servicepay.service.UsuarioServiceImpl;
 import com.example.servicepay.util.CurrentUser;
+import com.example.servicepay.util.LoggedInUser;
 import com.example.servicepay.util.TokenUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ApiOperation("User Authentication")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -235,12 +241,12 @@ public class UsuarioController {
 
     }
     
+    @PreAuthorize("hasAuthority('ROLE_MODERATOR')")
+    
     @GetMapping("/current_user")
-	public CurrentUser getAuthenticatedUser(Authentication authentication) {
-		CurrentUser user = modelMapper.map(authentication.getPrincipal(), CurrentUser. class);
-		if (user != null)
-			return user;
-		throw new UsernameNotFoundException("You need to loggin before authenticate.");
+	public CurrentUser getAuthenticatedUser(@LoggedInUser CurrentUser authentication) {
+	
+			return authentication;
 	}
 
 }
