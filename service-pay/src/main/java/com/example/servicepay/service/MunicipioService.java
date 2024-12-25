@@ -2,6 +2,9 @@ package com.example.servicepay.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.servicepay.entities.Municipio;
@@ -22,10 +25,24 @@ public class MunicipioService  {
 	private final MunicipioRepository municipioRepository;
 	
 	public List<Municipio> getMunicipiosAndProvinciaId(Long idProvincia) {
-		log.info("Buscando todos os municipios correspondente com provincia_id: {}", idProvincia); 
+		log.info("Buscando todos os municipios correspondente com provincia_id: {}", idProvincia);
+		
 		Provincia  provincia = new Provincia();
 		provincia.setId(idProvincia);
 		List<Municipio> municiosProvincia = municipioRepository.findByProvinciaId(provincia.getId());
+		
+		return municiosProvincia;
+	}
+	
+	
+	public Page<Municipio> getMunicipiosAndProvinciaId(Long idProvincia, int pageNumber, int pegeSise) {
+		log.info("Buscando todos os municipios correspondente com provincia_id: {}", idProvincia);
+		
+		Provincia  provincia = new Provincia();
+		provincia.setId(idProvincia);
+		Pageable pageable = PageRequest.of(pageNumber, pegeSise);
+		Page<Municipio> municiosProvincia = municipioRepository.findByProvinciaId(provincia.getId(), pageable);
+		
 		
 		return municiosProvincia;
 	}

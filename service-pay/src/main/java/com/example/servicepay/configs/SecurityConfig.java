@@ -57,7 +57,7 @@ public class SecurityConfig extends GlobalMethodSecurityConfiguration{
                 .authorizeHttpRequests((requests) -> requests
                      .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/actuator/**")
                         .permitAll()
-                     .requestMatchers("/items/**")
+                     .requestMatchers("/provincias/**", "/municipios/**")
                         .hasAnyRole("USER", "ADMIN")
                      .requestMatchers("/stock_movements/**")
                         .hasAnyRole("USER", "ADMIN")
